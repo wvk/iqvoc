@@ -84,11 +84,25 @@ return {
 
 
 // apply sortable to future elements
-$.fn.liveSortable = function(options) {
-	this.live("mouseover", function(ev) {
-		var el = $(this);
+jQuery.fn.liveSortable = function(options) {
+	var $ = jQuery;
+	var liveConnect = options.liveConnect;
+	delete options.liveConnect;
+
+	var initSortable = function(node, options) {
+		var el = $(node);
 		if(!el.data("init-sortable")) {
 			el.data("init-sortable", true).sortable(options);
+		}
+	};
+
+	this.live("mouseenter", function(ev) {
+		initSortable(this, options);
+		// make sure that all potential targets are sortable too
+		if(liveConnect) {
+			$(liveConnect.selector, liveConnect.context).each(function(i, node) {
+				initSortable(node, options);
+			});
 		}
 	});
 	return this;
@@ -145,7 +159,8 @@ jQuery(document).ready(function($) {
 		});
 	});
 	$("ul.treeview, .treeview ul").liveSortable({
-		connectWith: ".treeview ul"
+		connectWith: ".treeview ul",
+		liveConnect: { selector: "ul", context: treeview }
 	});
 
 	// New Label (Inflectional search)
