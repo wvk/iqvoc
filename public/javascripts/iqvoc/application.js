@@ -82,16 +82,18 @@ return {
 
 }(jQuery)); // /module IQVOC
 
-// apply draggable to future elements
-$.fn.liveDraggable = function(options) {
+
+// apply sortable to future elements
+$.fn.liveSortable = function(options) {
 	this.live("mouseover", function(ev) {
 		var el = $(this);
-		if(!el.data("init")) {
-			el.data("init", true).draggable(options);
+		if(!el.data("init-sortable")) {
+			el.data("init-sortable", true).sortable(options);
 		}
 	});
 	return this;
 };
+
 
 jQuery(document).ready(function($) {
 	var locale = $("meta[name=i18n-locale]").attr("content");
@@ -142,7 +144,9 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-	$("li", treeview).liveDraggable();
+	$("ul.treeview, .treeview ul").liveSortable({
+		connectWith: ".treeview ul"
+	});
 
 	// New Label (Inflectional search)
 	$("form#new_label input#label_value").keyup(function() {
