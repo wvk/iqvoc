@@ -90,6 +90,7 @@ $.fn.liveDraggable = function(options) {
 			el.data("init", true).draggable(options);
 		}
 	});
+	return this;
 };
 
 jQuery(document).ready(function($) {
@@ -126,6 +127,7 @@ jQuery(document).ready(function($) {
 		$("input[type=checkbox].lang_check").attr("checked", false);
 	});
 
+	// hierarchical tree view
 	var treeview = $("ul.hybrid-treeview").each(function() {
 		var container = this;
 		var url = $(this).attr("data-url");
